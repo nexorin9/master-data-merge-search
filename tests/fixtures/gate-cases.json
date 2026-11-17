@@ -1,0 +1,117 @@
+{
+  "$comment": "唯一性闸门边界与异常用例集（Task 24）。同一份 JSON 驱动 test-gate-boundaries 与 test-benchmark-compare。每条列 输入候选 / 主数据集合 / 期望 gateOutcome / 期望 reason 或目标 code。",
+  "version": 1,
+  "cases": [
+    {
+      "name": "医保码唯一命中",
+      "category": "医保码唯一命中",
+      "candidate": { "candidate_id": "GC-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "version": "v1" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "unique", "action": "merge", "target_code": "XJ7000000000001" }
+    },
+    {
+      "name": "医保码多义命中",
+      "category": "医保码多义命中",
+      "candidate": { "candidate_id": "GC-02", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001" },
+      "pool": [
+        { "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" },
+        { "code": "XJ7000000000002", "record_id": "MD-02", "domain": "drug", "name": "阿莫西林胶囊(旧)", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }
+      ],
+      "expected": { "gate": "ambiguous", "action": "uncertain", "reason": "多义命中" }
+    },
+    {
+      "name": "同名异规格",
+      "category": "同名异规格",
+      "candidate": { "candidate_id": "GC-03", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.5g*24片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000099" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "no-match", "action": "create" }
+    },
+    {
+      "name": "换单位等价",
+      "category": "换单位",
+      "candidate": { "candidate_id": "GC-04", "domain": "drug", "name": "阿莫西林胶囊", "spec": "250mg*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "unique", "action": "merge", "target_code": "XJ7000000000001" }
+    },
+    {
+      "name": "同义改名",
+      "category": "同义改名",
+      "candidate": { "candidate_id": "GC-05", "domain": "drug", "name": "再林", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "unique", "action": "merge", "target_code": "XJ7000000000001" }
+    },
+    {
+      "name": "缺 spec",
+      "category": "缺 spec",
+      "candidate": { "candidate_id": "GC-06", "domain": "drug", "name": "阿莫西林胶囊", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "missing-fields", "action": "uncertain", "reason": "关键字段缺失" }
+    },
+    {
+      "name": "缺 unit",
+      "category": "缺 unit",
+      "candidate": { "candidate_id": "GC-07", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "insurance_code": "XJ7000000000001" },
+      "pool": [],
+      "expected": { "gate": "missing-fields", "action": "uncertain", "reason": "关键字段缺失" }
+    },
+    {
+      "name": "停用码命中",
+      "category": "停用码命中",
+      "candidate": { "candidate_id": "GC-08", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "停用", "version": "v1" }],
+      "expected": { "gate": "no-match", "action": "uncertain", "reason": "命中记录均已停用" }
+    },
+    {
+      "name": "停用与启用混合命中",
+      "category": "停用+启用混合",
+      "candidate": { "candidate_id": "GC-09", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001" },
+      "pool": [
+        { "code": "XJ1", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "停用", "version": "v1" },
+        { "code": "XJ2", "record_id": "MD-02", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }
+      ],
+      "expected": { "gate": "ambiguous", "action": "uncertain", "reason": "多义命中" }
+    },
+    {
+      "name": "版本冲突",
+      "category": "version 冲突",
+      "candidate": { "candidate_id": "GC-10", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "version": "v2" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "unique", "action": "uncertain", "reason": "版本冲突" }
+    },
+    {
+      "name": "超长名称",
+      "category": "超长名称",
+      "candidate": { "candidate_id": "GC-11", "domain": "drug", "name": "阿莫西林胶囊 absolutely-long-name padding beyond five hundred chars", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "unique", "action": "merge", "target_code": "XJ7000000000001" }
+    },
+    {
+      "name": "脏行乱码",
+      "category": "脏行（乱码）",
+      "candidate": { "candidate_id": "GC-12", "domain": "drug", "name": "阿\u0000莫\ufffd西林", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "_dirty": true },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "dirty", "action": "uncertain", "reason": "模型输出不合法" }
+    },
+    {
+      "name": "医保码格式异常",
+      "category": "医保码格式异常",
+      "candidate": { "candidate_id": "GC-13", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ123" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "dirty", "action": "uncertain", "reason": "模型输出不合法" }
+    },
+    {
+      "name": "无近似项",
+      "category": "无近似项",
+      "candidate": { "candidate_id": "GC-14", "domain": "drug", "name": "一种全新化学药", "spec": "1g*1片", "dosage_form": "片剂", "unit": "盒", "insurance_code": "XJ9999999999999" },
+      "pool": [{ "code": "XJ7000000000001", "record_id": "MD-01", "domain": "drug", "name": "阿莫西林胶囊", "spec": "0.25g*12片", "dosage_form": "胶囊剂", "unit": "盒", "insurance_code": "XJ7000000000001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "no-match", "action": "create" }
+    },
+    {
+      "name": "域不匹配过滤",
+      "category": "域不匹配",
+      "candidate": { "candidate_id": "GC-15", "domain": "fee_item", "name": "挂号费", "spec": "1次", "dosage_form": "诊疗服务", "unit": "次", "insurance_code": "FY001" },
+      "pool": [{ "code": "FY001", "record_id": "MD-E1", "domain": "exam", "name": "挂号费", "spec": "1次", "dosage_form": "诊疗服务", "unit": "次", "insurance_code": "FY001", "status": "启用", "version": "v1" }],
+      "expected": { "gate": "no-match", "action": "create" }
+    }
+  ]
+}

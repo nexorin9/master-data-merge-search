@@ -1,0 +1,184 @@
+/**
+ * 设计 token 底座（Phase 4 / Task 44 定稿）。
+ *
+ * 颜色取自 Phase 1 视觉目标卡的三态配色，间距按 8px 栅格。
+ * 组件里不允许出现本文件之外的裸色值 —— 语义色一律经 var(--color-*) 引用。
+ * 本文件是全项目唯一允许出现色值字面量的样式文件。
+ */
+
+:root {
+  /* ── 中性色板 ─────────────────────────────────────────────── */
+  --color-surface-base: #f7f8fa;
+  --color-surface-panel: #ffffff;
+  --color-surface-muted: #f0f2f5;
+  --color-surface-sunken: #eceff3;
+  --color-border: #e3e6ea;
+  --color-border-strong: #cdd3da;
+  --color-text-primary: #1f2328;
+  --color-text-secondary: #6b7280;
+  --color-text-placeholder: #9aa2ad;
+  --color-text-inverse: #ffffff;
+
+  /* ── 主色（并入）───────────────────────────────────────────── */
+  --color-primary: #1f6feb;
+  --color-primary-hover: #1a5fd0;
+  --color-primary-active: #174ea6;
+  --color-primary-disabled: #a9c4f5;
+  --color-primary-soft: #e8f0fe;
+  --color-primary-border: #bcd2fb;
+
+  /* ── 三态 / 业务语义色 ─────────────────────────────────────── */
+  --color-action-merge: var(--color-primary);
+  --color-action-merge-soft: var(--color-primary-soft);
+  --color-action-create: #2e7d32;
+  --color-action-create-hover: #256628;
+  --color-action-create-soft: #e6f4e7;
+  --color-action-uncertain: #b26a00;
+  --color-action-uncertain-hover: #915600;
+  --color-action-uncertain-soft: #fdf3e3;
+  --color-action-failed: #c62828;
+  --color-action-failed-hover: #a32020;
+  --color-action-failed-soft: #fdeaea;
+
+  /* 语义别名：成功/跳过/失败，与三态共用同一色源 */
+  --color-success: var(--color-action-create);
+  --color-success-soft: var(--color-action-create-soft);
+  --color-warning: var(--color-action-uncertain);
+  --color-warning-soft: var(--color-action-uncertain-soft);
+  --color-danger: var(--color-action-failed);
+  --color-danger-soft: var(--color-action-failed-soft);
+  --color-receipt-success: var(--color-action-create);
+  --color-receipt-skipped: var(--color-primary);
+  --color-receipt-failed: var(--color-action-failed);
+
+  /* ── 四态：hover / active / disabled / loading ─────────────── */
+  --color-hover-bg: #f2f5f9;
+  --color-active-bg: #e6ecf4;
+  --color-hover-row: #f6f8fb;
+  --color-active-row: var(--color-primary-soft);
+  --color-disabled-bg: #eef0f3;
+  --color-disabled-text: #9aa2ad;
+  --color-disabled-border: #d7dbe0;
+  --color-loading-track: #dfe3e8;
+  --color-loading-indicator: var(--color-primary);
+  --color-skeleton: #eceff3;
+  --color-overlay: rgba(31, 35, 40, 0.45);
+  --color-focus-ring: rgba(31, 111, 235, 0.35);
+  --opacity-disabled: 0.55;
+
+  /* ── 间距：8px 栅格 ────────────────────────────────────────── */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+
+  /* ── 圆角与阴影三档 ────────────────────────────────────────── */
+  --radius-card: 6px;
+  --radius-overlay: 8px;
+  --radius-modal: 12px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(31, 35, 40, 0.06);
+  --shadow-overlay: 0 4px 12px rgba(31, 35, 40, 0.1);
+  --shadow-modal: 0 12px 32px rgba(31, 35, 40, 0.16);
+
+  /* ── 字体层级 ──────────────────────────────────────────────── */
+  --font-family-ui: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei',
+    'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: ui-monospace, 'JetBrains Mono', Menlo, Consolas, monospace;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.35;
+  --line-height-base: 1.6;
+  --line-height-loose: 1.8;
+  --letter-spacing-mono: 0.02em;
+
+  /* ── 控件尺寸 / 边框 / 动效 / 层级 ─────────────────────────── */
+  --control-height-sm: 28px;
+  --control-height-md: 34px;
+  --border-width: 1px;
+  --transition-fast: 150ms ease;
+  --z-drawer: 20;
+  --z-overlay: 30;
+  --z-modal: 40;
+  --z-toast: 50;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-base);
+}
+
+/* 表单控件统一继承界面字体，避免浏览器默认样式 */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled='true'],
+.is-disabled {
+  cursor: not-allowed;
+}
+
+/* 编码、字段值、幂等键等宽对齐 */
+code,
+kbd,
+.mono {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--letter-spacing-mono);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+/* loading 旋转与骨架呼吸，供四态复用 */
+@keyframes token-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes token-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}

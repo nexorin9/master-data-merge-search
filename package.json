@@ -1,0 +1,40 @@
+{
+  "name": "master-data-merge-search",
+  "version": "0.1.0",
+  "private": true,
+  "description": "主数据归并检索系统 — 主数据平台编码候选的批量归并评审桌面工具",
+  "author": "ChaosForge",
+  "license": "MIT",
+  "packageManager": "pnpm@11.10.0",
+  "main": "out/main/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "doctor": "tsx src/cli/index.ts doctor",
+    "replay": "tsx src/cli/index.ts replay",
+    "export": "tsx src/cli/index.ts export"
+  },
+  "dependencies": {
+    "async-mutex": "^0.5.0",
+    "h3": "^2.0.8",
+    "valibot": "^1.5.0",
+    "vue": "^3.5.45"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "electron": "^45.2.3",
+    "electron-vite": "^6.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}

@@ -1,0 +1,1480 @@
+{
+  "version": 1,
+  "source": "synthetic-simulator",
+  "annotation_method": "逐条读取 candidates.json 的 source_note，解析「类别 / 对照记录 / 期望 / 说明」；以对照记录的 record_id 在 master-data.json 解析其 code 作为 merge 目标；语料「期望=」按 expectation_mapping 归一到三态动作（non-merge → create，对齐 gate-cases GC-03 / GC-14 / GC-15 的 no-match → create）；uncertain 的 expected_reason 采用 src/core/types.ts 的 UncertainReason 词表，停用码对齐 GC-08「命中记录均已停用」。期望值无法归一或对照记录无法解析时降级为 uncertain，在 notes 记录决策并登记 degraded_candidate_ids。全量推导不含时间戳、随机源或网络调用，可由 --regenerate 确定性重建。",
+  "dataset_ref": {
+    "master_data": "tests/fixtures/corpus/master-data.json",
+    "candidates": "tests/fixtures/corpus/candidates.json",
+    "gate_cases": "tests/fixtures/gate-cases.json",
+    "manifest": "tests/fixtures/corpus/MANIFEST.json",
+    "manifest_version": "1.0",
+    "deterministic_seed": 20240433,
+    "master_data_count": 320,
+    "candidate_count": 160
+  },
+  "counts": {
+    "total": 160,
+    "by_category": {
+      "同义改名": 32,
+      "医保码错配": 32,
+      "停用码": 32,
+      "同名异规格": 32,
+      "换单位": 32
+    },
+    "by_action": {
+      "create": 64,
+      "merge": 64,
+      "uncertain": 32
+    }
+  },
+  "expectation_mapping": {
+    "merge": "merge",
+    "non-merge": "create",
+    "create": "create",
+    "uncertain": "uncertain"
+  },
+  "degraded_candidate_ids": [],
+  "notes": "全量 160 条候选均已标注，无缺行；降级存疑 0 条。merge 行的 expected_target_code 为对照记录 code；create / uncertain 行为 null（source_note 中的对照记录仅作「不应并入」的反例，不登记为目标）。同名异规格与医保码错配的语料期望为 non-merge，按 gate-cases 口径归一为 create；医保码错配无同名 gate-case，按「医保码全局无匹配 → no-match → create」对齐 GC-14 与 GC-15。",
+  "annotations": [
+    {
+      "candidate_id": "CAND-ALIAS-001",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000147|期望=merge|说明=商品名「先锋四号」映射通用名「头孢氨苄」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600146",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-002",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000149|期望=merge|说明=商品名「斯皮仁诺」映射通用名「伊曲康唑」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600148",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-003",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000150|期望=merge|说明=商品名「再林」映射通用名「阿莫西林」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600149",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-004",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000151|期望=merge|说明=商品名「先锋四号」映射通用名「头孢氨苄」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600150",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-005",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000153|期望=merge|说明=商品名「可密定」映射通用名「华法林」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600152",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-006",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000154|期望=merge|说明=商品名「西乐葆」映射通用名「塞来昔布」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600153",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-007",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000155|期望=merge|说明=商品名「再林」映射通用名「阿莫西林」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600154",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-008",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000156|期望=merge|说明=商品名「西力欣」映射通用名「头孢呋辛」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600155",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-009",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000157|期望=merge|说明=商品名「耐信」映射通用名「艾司奥美拉唑」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600156",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-010",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000158|期望=merge|说明=商品名「无环鸟苷」映射通用名「阿昔洛韦」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600157",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-011",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000163|期望=merge|说明=商品名「西力欣」映射通用名「头孢呋辛」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600162",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-012",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000164|期望=merge|说明=商品名「严迪」映射通用名「罗红霉素」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600163",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-013",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000165|期望=merge|说明=商品名「拜唐苹」映射通用名「阿卡波糖」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600164",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-014",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000167|期望=merge|说明=商品名「格华止」映射通用名「二甲双胍」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600166",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-015",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000169|期望=merge|说明=商品名「西力欣」映射通用名「头孢呋辛」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600168",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-016",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000170|期望=merge|说明=商品名「大扶康」映射通用名「氟康唑」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600169",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-017",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000171|期望=merge|说明=商品名「扑热息痛」映射通用名「对乙酰氨基酚」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600170",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-018",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000172|期望=merge|说明=商品名「罗氏芬」映射通用名「头孢曲松」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600171",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-019",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000175|期望=merge|说明=商品名「弗莱格」映射通用名「甲硝唑」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600174",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-020",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000177|期望=merge|说明=商品名「可密定」映射通用名「华法林」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600176",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-021",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000180|期望=merge|说明=商品名「波立维」映射通用名「氯吡格雷」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600179",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-022",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000182|期望=merge|说明=商品名「思密达」映射通用名「蒙脱石」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600181",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-023",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000183|期望=merge|说明=商品名「安博维」映射通用名「厄贝沙坦」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600182",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-024",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000185|期望=merge|说明=商品名「波立维」映射通用名「氯吡格雷」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600184",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-025",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000186|期望=merge|说明=商品名「安康信」映射通用名「依托考昔」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600185",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-026",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000189|期望=merge|说明=商品名「代文」映射通用名「缬沙坦」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600188",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-027",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000190|期望=merge|说明=商品名「思密达」映射通用名「蒙脱石」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600189",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-028",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000191|期望=merge|说明=商品名「安康信」映射通用名「依托考昔」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600190",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-029",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000193|期望=merge|说明=商品名「莫比可」映射通用名「美洛昔康」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600192",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-030",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000195|期望=merge|说明=商品名「达菲」映射通用名「奥司他韦」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600194",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-031",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000196|期望=merge|说明=商品名「西乐葆」映射通用名「塞来昔布」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600195",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-ALIAS-032",
+      "category": "同义改名",
+      "source_note": "同义改名|对照记录=MD-000197|期望=merge|说明=商品名「复达欣」映射通用名「头孢他啶」，携带目标医保码唯一命中，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600196",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-001",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000037|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000001」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-002",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000038|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000002」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-003",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000039|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000003」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-004",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000041|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000004」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-005",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000042|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000005」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-006",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000043|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000006」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-007",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000044|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000007」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-008",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000045|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000008」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-009",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000046|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000009」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-010",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000047|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000010」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-011",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000049|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000011」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-012",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000050|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000012」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-013",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000051|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000013」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-014",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000052|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000014」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-015",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000053|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000015」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-016",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000054|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000016」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-017",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000055|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000017」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-018",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000057|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000018」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-019",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000058|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000019」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-020",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000059|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000020」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-021",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000060|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000021」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-022",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000061|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000022」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-023",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000062|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000023」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-024",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000063|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000024」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-025",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000065|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000025」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-026",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000066|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000026」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-027",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000067|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000027」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-028",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000068|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000028」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-029",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000069|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000029」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-030",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000070|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000030」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-031",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000071|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000031」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-CODEMIS-032",
+      "category": "医保码错配",
+      "source_note": "医保码错配|对照记录=MD-000073|期望=non-merge|说明=名称规格与对照相同但医保码「XJ9200000000032」全局无匹配，不得仅凭名称相同就合并",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-001",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000008|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-002",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000016|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-003",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000024|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-004",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000032|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-005",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000040|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-006",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000048|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-007",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000056|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-008",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000064|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-009",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000072|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-010",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000080|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-011",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000088|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-012",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000096|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-013",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000104|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-014",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000112|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-015",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000120|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-016",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000128|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-017",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000136|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-018",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000144|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-019",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000152|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-020",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000160|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-021",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000168|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-022",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000176|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-023",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000184|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-024",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000192|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-025",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000200|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-026",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000208|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-027",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000216|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-028",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000224|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-029",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000232|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-030",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000240|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-031",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000248|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-INACTIVE-032",
+      "category": "停用码",
+      "source_note": "停用码|对照记录=MD-000256|期望=uncertain|说明=唯一命中目标主数据状态为停用，不得自动并入，应转存疑",
+      "expected_action": "uncertain",
+      "expected_target_code": null,
+      "expected_reason": "命中记录均已停用",
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-001",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000001|期望=non-merge|说明=名称与对照记录相同但规格「1.63g*31片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-002",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000002|期望=non-merge|说明=名称与对照记录相同但规格「1.63g*31片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-003",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000003|期望=non-merge|说明=名称与对照记录相同但规格「1.63g*31片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-004",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000004|期望=non-merge|说明=名称与对照记录相同但规格「0.73g*13支」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-005",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000005|期望=non-merge|说明=名称与对照记录相同但规格「0.73g*13支」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-006",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000006|期望=non-merge|说明=名称与对照记录相同但规格「300.13ml*8瓶」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-007",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000007|期望=non-merge|说明=名称与对照记录相同但规格「150.13mg*17袋」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-008",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000009|期望=non-merge|说明=名称与对照记录相同但规格「1.63g*31片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-009",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000010|期望=non-merge|说明=名称与对照记录相同但规格「0.88g*19片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-010",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000011|期望=non-merge|说明=名称与对照记录相同但规格「0.43g*19粒」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-011",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000012|期望=non-merge|说明=名称与对照记录相同但规格「0.88g*19片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-012",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000013|期望=non-merge|说明=名称与对照记录相同但规格「1.63g*31片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-013",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000014|期望=non-merge|说明=名称与对照记录相同但规格「30.13mg*14片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-014",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000015|期望=non-merge|说明=名称与对照记录相同但规格「0.73g*13支」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-015",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000017|期望=non-merge|说明=名称与对照记录相同但规格「60.13mg*21粒」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-016",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000018|期望=non-merge|说明=名称与对照记录相同但规格「0.43g*19粒」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-017",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000019|期望=non-merge|说明=名称与对照记录相同但规格「30.13mg*14片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-018",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000020|期望=non-merge|说明=名称与对照记录相同但规格「1.63g*31片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-019",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000021|期望=non-merge|说明=名称与对照记录相同但规格「0.88g*19片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-020",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000022|期望=non-merge|说明=名称与对照记录相同但规格「300.13ml*8瓶」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-021",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000023|期望=non-merge|说明=名称与对照记录相同但规格「0.43g*19粒」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-022",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000025|期望=non-merge|说明=名称与对照记录相同但规格「0.43g*19粒」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-023",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000026|期望=non-merge|说明=名称与对照记录相同但规格「0.88g*19片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-024",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000027|期望=non-merge|说明=名称与对照记录相同但规格「0.43g*19粒」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-025",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000028|期望=non-merge|说明=名称与对照记录相同但规格「0.73g*13支」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-026",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000029|期望=non-merge|说明=名称与对照记录相同但规格「30.13mg*14片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-027",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000030|期望=non-merge|说明=名称与对照记录相同但规格「30.13mg*14片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-028",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000031|期望=non-merge|说明=名称与对照记录相同但规格「300.13ml*8瓶」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-029",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000033|期望=non-merge|说明=名称与对照记录相同但规格「0.73g*13支」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-030",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000034|期望=non-merge|说明=名称与对照记录相同但规格「0.88g*19片」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-031",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000035|期望=non-merge|说明=名称与对照记录相同但规格「300.13ml*8瓶」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-SPECDIFF-032",
+      "category": "同名异规格",
+      "source_note": "同名异规格|对照记录=MD-000036|期望=non-merge|说明=名称与对照记录相同但规格「300.13ml*8瓶」无对应主数据，绝不能并，应转存疑或新建",
+      "expected_action": "create",
+      "expected_target_code": null,
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-001",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000074|期望=merge|说明=规格「250mg*12片」归一后等于对照「0.25g*12片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600073",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-002",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000075|期望=merge|说明=规格「100mg*12粒」归一后等于对照「0.1g*12粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600074",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-003",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000076|期望=merge|说明=规格「500mg*24片」归一后等于对照「0.5g*24片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600075",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-004",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000077|期望=merge|说明=规格「0.05g*10袋」归一后等于对照「50mg*10袋」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600076",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-005",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000078|期望=merge|说明=规格「100mg*12粒」归一后等于对照「0.1g*12粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600077",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-006",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000079|期望=merge|说明=规格「0.01g*7片」归一后等于对照「10mg*7片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600078",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-007",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000082|期望=merge|说明=规格「0.02g*14粒」归一后等于对照「20mg*14粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600081",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-008",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000084|期望=merge|说明=规格「0.02g*14粒」归一后等于对照「20mg*14粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600083",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-009",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000085|期望=merge|说明=规格「0.02g*14粒」归一后等于对照「20mg*14粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600084",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-010",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000086|期望=merge|说明=规格「500mg*24片」归一后等于对照「0.5g*24片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600085",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-011",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000089|期望=merge|说明=规格「0.05g*10袋」归一后等于对照「50mg*10袋」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600088",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-012",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000091|期望=merge|说明=规格「100mg*12粒」归一后等于对照「0.1g*12粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600090",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-013",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000093|期望=merge|说明=规格「500mg*24片」归一后等于对照「0.5g*24片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600092",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-014",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000094|期望=merge|说明=规格「0.05g*10袋」归一后等于对照「50mg*10袋」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600093",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-015",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000095|期望=merge|说明=规格「0.01g*7片」归一后等于对照「10mg*7片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600094",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-016",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000097|期望=merge|说明=规格「200mg*6支」归一后等于对照「0.2g*6支」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600096",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-017",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000098|期望=merge|说明=规格「500mg*24片」归一后等于对照「0.5g*24片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600097",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-018",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000099|期望=merge|说明=规格「250mg*12片」归一后等于对照「0.25g*12片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600098",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-019",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000100|期望=merge|说明=规格「0.01g*7片」归一后等于对照「10mg*7片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600099",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-020",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000101|期望=merge|说明=规格「500mg*24片」归一后等于对照「0.5g*24片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600100",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-021",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000102|期望=merge|说明=规格「0.01g*7片」归一后等于对照「10mg*7片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600101",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-022",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000103|期望=merge|说明=规格「0.02g*14粒」归一后等于对照「20mg*14粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600102",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-023",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000105|期望=merge|说明=规格「200mg*6支」归一后等于对照「0.2g*6支」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600104",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-024",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000106|期望=merge|说明=规格「0.01g*7片」归一后等于对照「10mg*7片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600105",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-025",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000107|期望=merge|说明=规格「100mg*12粒」归一后等于对照「0.1g*12粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600106",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-026",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000108|期望=merge|说明=规格「100mg*12粒」归一后等于对照「0.1g*12粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600107",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-027",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000109|期望=merge|说明=规格「0.05g*10袋」归一后等于对照「50mg*10袋」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600108",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-028",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000110|期望=merge|说明=规格「0.02g*14粒」归一后等于对照「20mg*14粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600109",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-029",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000111|期望=merge|说明=规格「0.02g*14粒」归一后等于对照「20mg*14粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600110",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-030",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000113|期望=merge|说明=规格「0.02g*14粒」归一后等于对照「20mg*14粒」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600112",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-031",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000114|期望=merge|说明=规格「200mg*6支」归一后等于对照「0.2g*6支」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600113",
+      "expected_reason": null,
+      "notes": null
+    },
+    {
+      "candidate_id": "CAND-UNITCONV-032",
+      "category": "换单位",
+      "source_note": "换单位|对照记录=MD-000116|期望=merge|说明=规格「500mg*24片」归一后等于对照「0.5g*24片」，含量单位换算后相等，应并入对照记录",
+      "expected_action": "merge",
+      "expected_target_code": "YP600115",
+      "expected_reason": null,
+      "notes": null
+    }
+  ]
+}

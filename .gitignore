@@ -1,0 +1,42 @@
+# 依赖与构建产物
+node_modules/
+dist/
+out/
+build/
+coverage/
+.vite/
+.shots-build/
+*.tsbuildinfo
+
+# 运行时数据与日志（可复现脚本产物，按需由命令重建）
+logs/
+tmp/
+temp/
+data/
+outputs/
+*.log
+*.tmp
+*.temp
+
+# 截图 harness 的 Node 侧生成数据（由 scripts/shots/gen-payload.ts 重建）
+scripts/shots/payload.json
+
+# 缓存目录
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# 凭据与本机配置（凭据只从环境变量读取，不入库）
+.env
+.env.local
+.env.*.local
+
+# round 元数据（不属于发布仓库）
+score.json
+
+# 编辑器与系统
+.DS_Store
+.idea/
+.vscode/
